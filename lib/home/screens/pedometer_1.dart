@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mindswells/theme/dimensions.dart';
-import 'package:mindswells/theme/my_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'package:pedometer/pedometer.dart';
-// import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Stepcount extends StatefulWidget {
@@ -26,22 +24,26 @@ class _StepcountState extends State<Stepcount> {
     return d.toString().substring(0, 19);
   }
 
-  // void checkPermission() async {
-  //   var status = await Permission.activityRecognition.status;
-  //   if (status.isDenied) {
-  //     var activity_permission = await Permission.activityRecognition.request();
-  //     // We didn't ask for permission yet or the permission has been denied before but not permanently.
-  //   }
-  //   if (await Permission.location.isRestricted) {
-  //     // The OS restricts access, for example because of parental controls.
-  //   }
-  // }
+  Future<void> checkPermission() async {
+    var status = await Permission.activityRecognition.status;
+
+    if (status.isDenied) {
+      var activityPermissionStatus =
+          await Permission.activityRecognition.request();
+
+      if (activityPermissionStatus.isGranted) {
+        // Permission has been granted. You can perform your activities here.
+      } else {
+        // Permission request was denied. You may want to handle this case.
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // checkPermission();
     initPlatformState();
+    checkPermission();
   }
 
   void calculateMiles(steps) {
@@ -83,7 +85,7 @@ class _StepcountState extends State<Stepcount> {
   void onPedestrianStatusError(error) {
     print('onPedestrianStatusError: $error');
     setState(() {
-      _status = 'Pedestrian Status not available';
+      _status = '?';
     });
     print(_status);
   }
@@ -91,7 +93,7 @@ class _StepcountState extends State<Stepcount> {
   void onStepCountError(error) {
     print('onStepCountError: $error');
     setState(() {
-      _steps = 'Step Count not available';
+      _steps = '?';
     });
   }
 
@@ -109,181 +111,103 @@ class _StepcountState extends State<Stepcount> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularPercentIndicator(
-                radius: Dimensions.radius150,
-                lineWidth: Dimensions.height10,
-                percent: _stepsPer,
-                animation: true,
-                center:
-                    Text("$_stepsPercent %", style: TextStyle(fontSize: 30)),
-                progressColor: MyColor.secondary,
-              ),
-              Text(
-                'Steps taken:',
-                style: TextStyle(fontSize: Dimensions.height25),
-              ),
-              Text(
-                _steps,
-                style: TextStyle(fontSize: Dimensions.height46),
-              ),
-              Divider(
-                height: Dimensions.height60,
-                thickness: 0,
-                color: Colors.white,
-              ),
-              Container(
-                height: Dimensions.height80,
-                transform: Matrix4.translationValues(0.0, -60, 0.0),
-                child: Image.asset('assets/marathon.png'),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: Dimensions.width15),
-                child: Row(
-                  children: [
-                    Expanded(
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            CircularPercentIndicator(
+              radius: 100.0,
+              lineWidth: 12.0,
+              percent: _stepsPer,
+              animation: true,
+              center: Text("$_stepsPercent %",
+                  style: TextStyle(fontSize: 30, color: Colors.deepPurple)),
+              progressColor: Colors.deepPurple,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Steps taken: $_steps',
+              style: TextStyle(fontSize: 30),
+            ),
+            Divider(
+              height: 10,
+              thickness: 0,
+              color: Colors.white,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(Dimensions.height6),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.deepOrange),
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: Dimensions.height10,
-                          ),
-                          Text(
-                            "Heart",
-                            style: TextStyle(fontSize: Dimensions.height15),
-                          ),
-                          Text(
-                            "80",
-                            style: TextStyle(fontSize: Dimensions.height20),
-                          ),
-                          Text(
-                            "Per min",
-                            style: TextStyle(fontSize: Dimensions.height10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: Dimensions.height20),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: MyColor.secondary),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(Dimensions.height30)),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(Dimensions.height6),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: MyColor.primary),
-                              child: Icon(
-                                Icons.local_fire_department_sharp,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(
-                              height: Dimensions.height10,
-                            ),
-                            Text(
-                              "Calories",
-                              style: TextStyle(fontSize: Dimensions.height15),
-                            ),
-                            Text(
-                              "$_calories",
-                              style: TextStyle(fontSize: Dimensions.height20),
-                            ),
-                            Text(
-                              "Kcal",
-                              style: TextStyle(fontSize: Dimensions.height10),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(Dimensions.height6),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.orangeAccent),
-                            child: Icon(
-                              Icons.nightlight_round,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: Dimensions.height10,
-                          ),
-                          Text(
-                            "Sleep",
-                            style: TextStyle(fontSize: Dimensions.height15),
-                          ),
-                          Text(
-                            "8:30",
-                            style: TextStyle(fontSize: Dimensions.height20),
-                          ),
-                          Text(
-                            "Hours",
-                            style: TextStyle(fontSize: Dimensions.height10),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(Dimensions.height6),
+                            padding: EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.deepPurple),
                             child: Icon(
-                              FontAwesomeIcons.running,
+                              Icons.local_fire_department_sharp,
                               color: Colors.white,
                             ),
                           ),
                           SizedBox(
-                            height: Dimensions.height10,
+                            height: 10,
                           ),
                           Text(
-                            "Distance",
-                            style: TextStyle(fontSize: Dimensions.height15),
+                            "Calories",
+                            style: TextStyle(fontSize: 16.0),
                           ),
                           Text(
-                            "$_distance",
-                            style: TextStyle(fontSize: Dimensions.height20),
+                            "$_calories",
+                            style: TextStyle(fontSize: 20),
                           ),
                           Text(
-                            "Miles",
-                            style: TextStyle(fontSize: Dimensions.height10),
+                            "Kcal",
+                            style: TextStyle(fontSize: 12.0),
                           )
                         ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.deepPurple),
+                          child: Icon(
+                            FontAwesomeIcons.running,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Distance",
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                        Text(
+                          "$_distance",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "Miles",
+                          style: TextStyle(fontSize: 12.0),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

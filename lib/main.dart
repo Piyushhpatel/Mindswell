@@ -1,3 +1,5 @@
+import 'package:mindswells/home/home_screen.dart';
+import 'package:mindswells/home/screens/HomeScreen/main_screen.dart';
 import 'package:mindswells/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +14,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'MindsWell',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
     );
   }
 }

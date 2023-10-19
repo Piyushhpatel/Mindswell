@@ -46,7 +46,7 @@ class Exercise extends StatefulWidget {
 }
 
 class _ExerciseState extends State<Exercise> {
-  int _current = 0;
+  // int _current = 0;
 
   @override
   void initState() {
