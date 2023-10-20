@@ -4,8 +4,11 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 
 class AudioPlayerPage extends StatefulWidget {
   final String musicUrl;
+  // final String imagepath;
+  final String fileName;
 
-  AudioPlayerPage({Key? key, required this.musicUrl}) : super(key: key);
+  AudioPlayerPage({Key? key, required this.musicUrl, required this.fileName})
+      : super(key: key);
 
   @override
   State<AudioPlayerPage> createState() => _AudioPlayerPageState();
@@ -13,7 +16,9 @@ class AudioPlayerPage extends StatefulWidget {
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
   String get musicUrl => widget.musicUrl; // Corrected musicUrl access
-  String thumbnailImgUrl = "assets/icon.png"; // Insert your thumbnail URL
+  String get FileName => widget.fileName; // Corrected musicUrl access
+  // String get thumbnailImgUrl => widget.imagepath;
+  String thumbnailImgUrl = 'assets/icon.png';
   var player = AudioPlayer();
   bool loaded = false;
   bool playing = false;
@@ -60,10 +65,10 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
       body: Column(
         children: [
           const Spacer(
-            flex: 2,
+            flex: 1,
           ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(30),
             child: Image.asset(
               thumbnailImgUrl,
               height: 350,
@@ -71,7 +76,16 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
               fit: BoxFit.cover,
             ),
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 40,
+          ),
+          Text(
+            FileName,
+            style: TextStyle(fontSize: 30, color: Colors.deepPurple),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: StreamBuilder(
