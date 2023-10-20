@@ -10,15 +10,19 @@ class Second extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Welcome to Second',
       home: Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text(
+              "Diet Plan",
+            ),
+          ),
+          backgroundColor: Colors.deepPurple,
+        ),
         body: Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.all(Dimensions.height20)),
-            Text('Diet Plan',
-                style: TextStyle(
-                    color: Colors.black, fontSize: Dimensions.height30)),
             Container(
               height: Dimensions.height250,
               width: Dimensions.width500,
@@ -40,7 +44,7 @@ class Second extends StatelessWidget {
                     Container(
                       height: Dimensions.height150,
                       width: Dimensions.width150,
-                      child: FlatButton(
+                      child: MaterialButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius:
                                 new BorderRadius.circular(Dimensions.height15),
@@ -54,7 +58,6 @@ class Second extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Diet()),
                           );
                         },
-                        text: ' ',
                         child: Text(
                           "Weekly Diet".toUpperCase(),
                           style: TextStyle(
@@ -66,7 +69,7 @@ class Second extends StatelessWidget {
                     Container(
                       height: Dimensions.height150,
                       width: Dimensions.width150,
-                      child: FlatButton(
+                      child: MaterialButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius:
                                 new BorderRadius.circular(Dimensions.height15),
@@ -80,7 +83,6 @@ class Second extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Diet()),
                           );
                         },
-                        text: ' ',
                         child: Text(
                           "Weight Gain".toUpperCase(),
                           style: TextStyle(
@@ -100,7 +102,7 @@ class Second extends StatelessWidget {
                     Container(
                       height: Dimensions.height150,
                       width: Dimensions.width150,
-                      child: FlatButton(
+                      child: MaterialButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius:
                                 new BorderRadius.circular(Dimensions.height15),
@@ -114,7 +116,6 @@ class Second extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Diet()),
                           );
                         },
-                        text: ' ',
                         child: Text(
                           "Weight Lose".toUpperCase(),
                           style: TextStyle(
@@ -126,7 +127,7 @@ class Second extends StatelessWidget {
                     Container(
                       height: Dimensions.height150,
                       width: Dimensions.width150,
-                      child: FlatButton(
+                      child: MaterialButton(
                         shape: new RoundedRectangleBorder(
                             borderRadius:
                                 new BorderRadius.circular(Dimensions.height15),
@@ -140,7 +141,6 @@ class Second extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Diet()),
                           );
                         },
-                        text: ' ',
                         child: Text(
                           "Other Diets".toUpperCase(),
                           style: TextStyle(

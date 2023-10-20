@@ -40,7 +40,7 @@ class _ExerciseState extends State<Exercise> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text('Exercises'),
+        title: Center(child: Text('Exercises')),
         automaticallyImplyLeading: false,
       ),
       body: ListView(

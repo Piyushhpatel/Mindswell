@@ -43,9 +43,11 @@ class _HomeState extends State<Home> {
           : HexColor('#FFFFFF'),
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text(
-          'Hi I am Baymax',
-          style: TextStyle(color: Colors.white),
+        title: Center(
+          child: Text(
+            'Health Consultant',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: SafeArea(
