@@ -127,6 +127,7 @@ class _HomePageState extends State<MainScreen> {
                           child: Emoticons(
                             emoticons: "😰",
                           ),
+                          backgroundColor: Colors.deepPurple[50],
                         ),
                         SizedBox(height: 8),
                         Text(
