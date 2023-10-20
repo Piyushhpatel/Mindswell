@@ -3,14 +3,16 @@ import 'package:just_audio/just_audio.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 
 class AudioPlayerPage extends StatefulWidget {
-  const AudioPlayerPage({super.key});
+  final String musicUrl;
+
+  AudioPlayerPage({Key? key, required this.musicUrl}) : super(key: key);
 
   @override
   State<AudioPlayerPage> createState() => _AudioPlayerPageState();
 }
 
 class _AudioPlayerPageState extends State<AudioPlayerPage> {
-  String musicUrl = "assets/audio/testaudio.mp3"; // Insert your music URL
+  String get musicUrl => widget.musicUrl; // Corrected musicUrl access
   String thumbnailImgUrl = "assets/icon.png"; // Insert your thumbnail URL
   var player = AudioPlayer();
   bool loaded = false;
@@ -53,7 +55,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Music Player"),
+        title: Text("Music Player"),
       ),
       body: Column(
         children: [

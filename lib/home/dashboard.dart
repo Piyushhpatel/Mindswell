@@ -2,7 +2,7 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mindswells/home/screens/HomeScreen/main_screen.dart';
+import 'package:mindswells/home/screens/main_screen.dart';
 import 'package:mindswells/home/screens/fifth.dart';
 import 'package:mindswells/home/screens/fourth.dart';
 import 'package:mindswells/home/screens/second.dart';
