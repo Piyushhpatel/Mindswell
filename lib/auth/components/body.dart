@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/signup.dart';
-import 'package:mindswells/auth/auth_components/already_have_an_account_acheck.dart';
+// import 'package:mindswells/auth/auth_components/already_have_an_account_acheck.dart';
 import 'package:mindswells/auth/auth_components/rounded_button.dart';
 import 'package:mindswells/auth/auth_components/rounded_input_field.dart';
 import 'package:mindswells/auth/auth_components/rounded_password_field.dart';

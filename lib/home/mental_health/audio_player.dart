@@ -1,107 +1,110 @@
-// import 'package:audioplayers/audioplayers_api.dart';
-// // import 'package:flutter/material.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:flutter_app/home/mental_health/play_pause.dart';
+// import 'package:flutter/material.dart';
+import 'dart:ffi';
 
-// class AudioPlayerWidget extends StatefulWidget {
-//   final String url;
-//   final bool isAsset;
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import 'package:mindswells/home/mental_health/play_pause.dart';
 
-//   const AudioPlayerWidget({
-//     Key? key,
-//     required this.url,
-//     this.isAsset = false,
-//   }) : super(key: key);
+class AudioPlayerWidget extends StatefulWidget {
+  final String url;
+  final bool isAsset;
 
-//   @override
-//   _AudioPlayerWidgetState createState() => _AudioPlayerWidgetState();
-// }
+  const AudioPlayerWidget({
+    Key? key,
+    required this.url,
+    this.isAsset = false,
+  }) : super(key: key);
 
-// class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
-//   late AudioPlayer _audioPlayer;
-//   late AudioCache _audioCache;
+  @override
+  _AudioPlayerWidgetState createState() => _AudioPlayerWidgetState();
+}
 
-//   PlayerState _playerState = PlayerState.STOPPED;
+class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
+  late AudioPlayer _audioPlayer;
+  // late AudioCache _audioCache;
 
-//   bool get _isPlaying => _playerState == PlayerState.PLAYING;
-//   bool get _isLocal => !widget.url.contains('https');
+  PlayerState _playerState = PlayerState.stopped;
 
-//   @override
-//   void initState() {
-//     _audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-//     _audioCache = AudioCache(fixedPlayer: _audioPlayer);
-//     _audioPlayer.onPlayerError.listen((msg) {
-//       print('audioPlayer error : $msg');
-//       setState(() {
-//         _playerState = PlayerState.STOPPED;
-//       });
-//     });
-//     super.initState();
-//   }
+  bool get _isPlaying => _playerState == PlayerState.playing;
+  bool get _isLocal => !widget.url.contains('https');
 
-//   @override
-//   void dispose() {
-//     _audioPlayer.dispose();
-//     super.dispose();
-//   }
+  @override
+  void initState() {
+    _audioPlayer = AudioPlayer();
+    // _audioCache = AudioCache(fixedPlayer: _audioPlayer);
+    // _audioPlayer.onPlayerError.listen((msg) {
+    //   print('audioPlayer error : $msg');
+    //   setState(() {
+    //     _playerState = PlayerState.stopped;
+    //   });
+    // });
+    super.initState();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         PlayPauseButton(isPlaying: _isPlaying, onPlay: () => _playPause()),
-//         IconButton(
-//           onPressed: () => _stop(),
-//           icon: Icon(
-//             Icons.stop,
-//             size: 32,
-//             color: Colors.red,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
-//   _playPause() async {
-//     if (_playerState == PlayerState.PLAYING) {
-//       final playerResult = await _audioPlayer.pause();
-//       if (playerResult == 1) {
-//         setState(() {
-//           _playerState = PlayerState.PAUSED;
-//         });
-//       }
-//     } else if (_playerState == PlayerState.PAUSED) {
-//       final playerResult = await _audioPlayer.resume();
-//       if (playerResult == 1) {
-//         setState(() {
-//           _playerState = PlayerState.PLAYING;
-//         });
-//       }
-//     } else {
-//       if (widget.isAsset) {
-//         _audioPlayer = await _audioCache.play(widget.url);
-//         setState(() {
-//           _playerState = PlayerState.PLAYING;
-//         });
-//       } else {
-//         final playerResult =
-//             await _audioPlayer.play(widget.url, isLocal: _isLocal);
-//         if (playerResult == 1) {
-//           setState(() {
-//             _playerState = PlayerState.PLAYING;
-//           });
-//         }
-//       }
-//     }
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        PlayPauseButton(isPlaying: _isPlaying, onPlay: () => _playPause()),
+        IconButton(
+          onPressed: () => _stop(),
+          icon: Icon(
+            Icons.stop,
+            size: 32,
+            color: Colors.red,
+          ),
+        ),
+      ],
+    );
+  }
 
-//   _stop() async {
-//     final playerResult = await _audioPlayer.stop();
-//     if (playerResult == 1) {
-//       setState(() {
-//         _playerState = PlayerState.STOPPED;
-//       });
-//     }
-//   }
-// }
+  _playPause() async {
+    if (_playerState == PlayerState.playing) {
+      final playerResult = await _audioPlayer.pause() as Bool;
+      if (playerResult == 1) {
+        setState(() {
+          _playerState = PlayerState.paused;
+        });
+      }
+    } else if (_playerState == PlayerState.paused) {
+      final playerResult = await _audioPlayer.resume() as Bool;
+      if (playerResult == 1) {
+        setState(() {
+          _playerState = PlayerState.playing;
+        });
+      }
+      //   } else {
+      //     if (widget.isAsset) {
+      //       _audioPlayer = await _audioCache.play(widget.url);
+      //       setState(() {
+      //         _playerState = PlayerState.playing;
+      //       });
+      //     } else {
+      //       final playerResult = await _audioPlayer.play(widget.url);
+      //       if (playerResult == 1 as bool) {
+      //         setState(() {
+      //           _playerState = PlayerState.playing;
+      //         });
+      //       }
+      //     }
+      //   }
+      // }
+
+      // _stop() async {
+      //   final playerResult = await _audioPlayer.stop();
+      //   if (playerResult == 1 as Bool) {
+      //     setState(() {
+      //       _playerState = PlayerState.stopped;
+      //     });
+    }
+  }
+
+  _stop() {}
+}

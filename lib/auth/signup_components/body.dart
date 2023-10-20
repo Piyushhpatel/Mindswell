@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mindswells/auth/auth_components/rounded_input_field.dart';
 import 'package:mindswells/auth/auth_components/rounded_password_field.dart';
-import 'package:mindswells/auth/login.dart';
+// import 'package:mindswells/auth/login.dart';
 import 'package:mindswells/auth/signup_components/background.dart';
 import 'package:mindswells/auth/signup_components/or_divider.dart';
 import 'package:mindswells/auth/signup_components/social_icon.dart';
-import 'package:mindswells/auth/auth_components/already_have_an_account_acheck.dart';
+// import 'package:mindswells/auth/auth_components/already_have_an_account_acheck.dart';
 import 'package:mindswells/auth/auth_components/rounded_button.dart';
 import 'package:flutter_svg/svg.dart';
 

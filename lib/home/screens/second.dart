@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindswells/home/diet/diet.dart';
 import 'package:mindswells/theme/dimensions.dart';
-import 'package:mindswells/theme/flart_button.dart';
 
 class Second extends StatelessWidget {
   @override
