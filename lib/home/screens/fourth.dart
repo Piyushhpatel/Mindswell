@@ -15,7 +15,7 @@ class Fourth extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
-          title: Center(child: Text('Mental Fitness')),
+          title: Center(child: Text('Music Therapy')),
         ),
         body: ListView(
           children: <Widget>[

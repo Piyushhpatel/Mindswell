@@ -1,216 +1,163 @@
-import 'package:dialog_flowtter/dialog_flowtter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
-void main() {
-  runApp(MyChatApp());
+class ChatMessage {
+  final String text;
+  final bool isBot;
+
+  ChatMessage(this.text, this.isBot);
 }
 
-class MyChatApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Bot',
-      home: Home(),
+class Chatbot {
+  final String apiKey;
+
+  Chatbot(this.apiKey);
+
+  Future<String> getResponse(String message) async {
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/completions'),
+      headers: {
+        'Authorization': 'Bearer $apiKey',
+        "Content-Type": "application/json"
+      },
+      body: json.encode({
+        "model": "gpt-3.5-turbo-instruct-0914",
+        "prompt": message,
+        "temperature": 0.9,
+        "max_tokens": 150,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "presence_penalty": 0.6,
+        "stop": [" Human:", " AI:"]
+      }),
     );
+
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body);
+
+      if (responseBody.containsKey('choices') &&
+          responseBody['choices'].isNotEmpty) {
+        return responseBody['choices'][0]['text'];
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } else {
+      throw Exception('Request failed with status: ${response.statusCode}');
+    }
   }
 }
 
-class Home extends StatefulWidget {
+class ChatbotApp extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _ChatbotAppState createState() => _ChatbotAppState();
 }
 
-class _HomeState extends State<Home> {
-  late DialogFlowtter dialogFlowtter;
-  final TextEditingController messageController = TextEditingController();
+class _ChatbotAppState extends State<ChatbotApp> {
+  final chatbot = Chatbot('API_KEY');
+  List<ChatMessage> _messages = [];
+  String _message = '';
 
-  List<Map<String, dynamic>> messages = [];
+  void addMessage(String text, bool isBot) {
+    setState(() {
+      _messages.add(ChatMessage(text, isBot));
+    });
+  }
 
-  @override
-  void initState() {
-    super.initState();
-    // DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
+  void send() async {
+    addMessage(_message, false);
+
+    try {
+      final response = await chatbot.getResponse(_message);
+      addMessage(response, true);
+    } catch (e) {
+      print('Error: $e');
+      addMessage('An error occurred. Please try again.', true);
+    }
+    _message = ''; // Clear the input field after sending.
   }
 
   @override
   Widget build(BuildContext context) {
-    var themeValue = MediaQuery.of(context).platformBrightness;
     return Scaffold(
-      backgroundColor: themeValue == Brightness.dark
-          ? HexColor('#262626')
-          : HexColor('#FFFFFF'),
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: Text(
-            'Health Consultant',
-            style: TextStyle(color: Colors.white),
+      body: Column(
+        children: [
+          Container(
+            height: 110,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(bottom: 18),
+            child: Text(
+              "Health Consultant",
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.deepPurple,
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(child: Body(messages: messages)),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: messageController,
-                      style: TextStyle(
-                          color: themeValue == Brightness.dark
-                              ? Colors.white
-                              : Colors.deepPurple,
-                          fontFamily: 'Poppins'),
-                      decoration: new InputDecoration(
-                        enabledBorder: new OutlineInputBorder(
-                            borderSide: new BorderSide(
-                                color: themeValue == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.deepPurple),
-                            borderRadius: BorderRadius.circular(15)),
-                        hintStyle: TextStyle(
-                          color: themeValue == Brightness.dark
-                              ? Colors.white54
-                              : Colors.deepPurple,
-                          fontSize: 15,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        labelStyle: TextStyle(
-                            color: themeValue == Brightness.dark
-                                ? Colors.white
-                                : Colors.deepPurple),
-                        hintText: 'Send a message',
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    color: themeValue == Brightness.dark
-                        ? Colors.white
-                        : Colors.deepPurple,
-                    icon: Icon(Icons.send),
-                    onPressed: () {
-                      sendMessage(messageController.text);
-                      messageController.clear();
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(20),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final message = _messages[index];
+                return Bubble(
+                  message: message.text,
+                  isBot: message.isBot,
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _message = value;
+                      });
                     },
                   ),
-                ],
-              ),
+                ),
+                IconButton(
+                  onPressed: send,
+                  icon: Icon(Icons.send),
+                ),
+              ],
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Bubble extends StatelessWidget {
+  final String message;
+  final bool isBot;
+
+  Bubble({required this.message, required this.isBot});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isBot ? Alignment.topLeft : Alignment.topRight,
+      child: Container(
+        margin: EdgeInsets.all(8),
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isBot ? Colors.deepPurple : Colors.deepPurple,
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-    );
-  }
-
-  void sendMessage(String text) async {
-    if (text.isEmpty) return;
-    setState(() {
-      addMessage(
-        Message(text: DialogText(text: [text])),
-        true,
-      );
-    });
-
-    DetectIntentResponse response = await dialogFlowtter.detectIntent(
-      queryInput: QueryInput(text: TextInput(text: text)),
-    );
-
-    if (response.message == null) return;
-    setState(() {
-      addMessage(response.message!);
-    });
-  }
-
-  void addMessage(Message message, [bool isUserMessage = false]) {
-    messages.add({
-      'message': message,
-      'isUserMessage': isUserMessage,
-    });
-  }
-
-  @override
-  void dispose() {
-    dialogFlowtter.dispose();
-    super.dispose();
-  }
-}
-
-class Body extends StatelessWidget {
-  final List<Map<String, dynamic>> messages;
-
-  const Body({
-    Key? key,
-    this.messages = const [],
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      itemBuilder: (context, i) {
-        var obj = messages[messages.length - 1 - i];
-        Message message = obj['message'];
-        bool isUserMessage = obj['isUserMessage'] ?? false;
-        return Row(
-          mainAxisAlignment:
-              isUserMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _MessageContainer(
-              message: message,
-              isUserMessage: isUserMessage,
-            ),
-          ],
-        );
-      },
-      separatorBuilder: (_, i) => Container(height: 10),
-      itemCount: messages.length,
-      reverse: true,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 20,
-      ),
-    );
-  }
-}
-
-class _MessageContainer extends StatelessWidget {
-  final Message message;
-  final bool isUserMessage;
-
-  const _MessageContainer({
-    Key? key,
-    required this.message,
-    this.isUserMessage = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(maxWidth: 250),
-      child: LayoutBuilder(
-        builder: (context, constrains) {
-          return Container(
-            decoration: BoxDecoration(
-              color: isUserMessage ? Colors.deepPurple : Colors.grey[800],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              message.text?.text?[0] ?? '',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
+        child: Text(
+          message,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
