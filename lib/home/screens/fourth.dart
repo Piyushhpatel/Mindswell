@@ -2,8 +2,8 @@
 // import 'package:fitness_app_megahack/Mental/video/youtube.dart';
 // import 'package:fitness_app_megahack/map/map_view.dart';
 import 'package:flutter/material.dart';
+import 'package:mindswells/home/mental_health/audio_page.dart';
 // import 'package:mindswells/home/chat/chat.dart';
-import 'package:mindswells/home/mental_health/music.dart';
 import 'package:mindswells/theme/dimensions.dart';
 
 class Fourth extends StatelessWidget {
@@ -81,7 +81,8 @@ class Fourth extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AudioApp()),
+                        MaterialPageRoute(
+                            builder: (context) => AudioPlayerPage()),
                       );
                     }),
                 Text('Music Therapy',
