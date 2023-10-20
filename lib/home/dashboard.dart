@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mindswells/home/screens/HomeScreen/main_screen.dart';
 import 'package:mindswells/home/screens/fifth.dart';
 import 'package:mindswells/home/screens/fourth.dart';
-import 'package:mindswells/home/screens/pedometer_1.dart';
 import 'package:mindswells/home/screens/second.dart';
 import 'package:mindswells/home/screens/third.dart';
 import 'package:mindswells/theme/dimensions.dart';
@@ -90,9 +89,9 @@ class _DashBoardState extends State<DashBoard> {
               size: Dimensions.height30, color: Colors.white),
           Icon(FontAwesomeIcons.dumbbell,
               size: Dimensions.height30, color: Colors.white),
-          Icon(FontAwesomeIcons.music,
+          Icon(FontAwesomeIcons.spotify,
               size: Dimensions.height30, color: Colors.white),
-          Icon(FontAwesomeIcons.commentMedical,
+          Icon(FontAwesomeIcons.solidMessage,
               size: Dimensions.height30, color: Colors.white),
         ],
         color: MyColor.kPrimaryColor,
