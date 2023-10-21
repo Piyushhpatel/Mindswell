@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+// import 'package:mindswells/home/feeling/screens/checkBack.dart';
+// import 'package:mindswells/home/feeling/screens/review.dart';
+import 'package:mindswells/home/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/challenge.dart';
 import '../providers/challenges.dart';
@@ -12,7 +15,7 @@ import '../widgets/bottomButton.dart';
 import '../constants.dart';
 
 class ScheduleScreen extends StatefulWidget {
-  static const routeName = 'schedule';
+  static const routeName = '/schedule';
 
   final Future<void> Function(DateTime, String, String) scheduleNotification;
   ScheduleScreen(this.scheduleNotification);
@@ -166,7 +169,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     builder: (BuildContext context) {
                       return CustomAlertDialog(
                         title: 'Oops!',
-                        action: 'OK',
+                        action: 'Ok',
                         content:
                             'You have picked a time that is already over, please pick another time to check back with us.',
                       );
@@ -194,28 +197,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   Provider.of<Challenges>(context, listen: false)
                       .create(newChallenge)
                       .then((_) {
-                    return widget.scheduleNotification(
-                      reminderDateTime,
-                      'Check In',
-                      'Let\'s revaluate your ${_problem.noun.toLowerCase()} levels again!',
-                    );
-                  }).then((_) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/',
-                      (route) => false,
-                    );
-                  }).catchError((err) {
-                    print(err);
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return CustomAlertDialog(
-                            title: 'Oops!',
+                            title: 'Challenge Started',
                             action: 'OK',
-                            content: 'An unexpected error occurred!',
+                            content: 'Your challenge has started!',
                           );
                         });
-                    throw (err);
+                  }).then((_) {
+                    Navigator.of(context).pushNamed(
+                      MainScreen.routeName,
+                    );
                   });
                 }
               },
