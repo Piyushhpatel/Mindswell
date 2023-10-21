@@ -2,10 +2,9 @@ import 'dart:async';
 // import 'package:fitness_app_megahack/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mindswells/pages/introduction_screen.dart';
-import 'package:mindswells/theme/dimensions.dart';
 import 'package:mindswells/theme/my_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindswells/pages/introduction_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -49,14 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              Padding(padding: EdgeInsets.all(Dimensions.height10)),
+              const Padding(padding: EdgeInsets.all(10.0)),
               Text(
                 'HOLISTIC',
                 style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                      color: Colors.white,
-                      letterSpacing: .5,
-                      fontSize: Dimensions.height46),
+                  textStyle: const TextStyle(
+                      color: Colors.white, letterSpacing: .5, fontSize: 46),
                 ),
               ),
               Container(
