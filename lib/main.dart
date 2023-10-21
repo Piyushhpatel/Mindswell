@@ -1,6 +1,5 @@
 import 'package:mindswells/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:mindswells/home/screens/main_screen.dart';
 
 void main() => runApp(const MyApp());
 

@@ -2,7 +2,8 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mindswells/home/screens/main_screen.dart';
+import 'package:mindswells/home/feeling/feeling.dart';
+// import 'package:mindswells/home/screens/main_screen.dart';
 import 'package:mindswells/home/screens/fifth.dart';
 import 'package:mindswells/home/screens/fourth.dart';
 import 'package:mindswells/home/screens/second.dart';
@@ -27,12 +28,12 @@ class _DashBoardState extends State<DashBoard> {
   double bmi = 0.0;
 
   final Exercise _sites = new Exercise();
-  final MainScreen _dashboard = new MainScreen();
+  final FeelingPage _dashboard = new FeelingPage();
   final Second _clients = new Second();
   final Fourth _flutterpages = new Fourth();
   final Fifth _pageother = new Fifth();
 
-  Widget _showPage = new MainScreen();
+  Widget _showPage = new FeelingPage();
 
   Widget _pageChooser(int page) {
     switch (page) {

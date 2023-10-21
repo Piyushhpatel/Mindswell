@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+// import 'package:mindswells/home/feeling/feeling.dart';
+import 'package:mindswells/home/feeling/models/problem.dart';
+import 'package:mindswells/home/feeling/screens/triage.dart';
 import 'package:mindswells/home/screens/pedometer_1.dart';
 import 'package:mindswells/theme/dimensions.dart';
 import 'package:mindswells/theme/emoticons.dart';
 import 'package:intl/intl.dart';
+// import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
+  static const routeName = '/mainscreen';
+
   const MainScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,11 +25,6 @@ class _HomePageState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.deepPurple,
-      // bottomNavigationBar: BottomNavigationBar(items: [
-      //   BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-      //   BottomNavigationBarItem(icon: Icon(Icons.message), label: ''),
-      //   BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-      // ]),
       body: SafeArea(
           child: Column(
         children: [
@@ -69,33 +70,6 @@ class _HomePageState extends State<MainScreen> {
                 ),
 
                 SizedBox(height: 25),
-
-                //search bar
-
-                // Container(
-                //   padding: EdgeInsets.all(12),
-                //   decoration: BoxDecoration(
-                //       color: const Color.fromARGB(255, 198, 169, 255),
-                //       borderRadius: BorderRadius.circular(12)),
-                //   child: Row(
-                //     children: [
-                //       Icon(
-                //         Icons.search,
-                //         color: Colors.deepPurple,
-                //       ),
-                //       SizedBox(
-                //         width: 5,
-                //       ),
-                //       Text(
-                //         'Search',
-                //         style: TextStyle(color: Colors.deepPurple),
-                //       )
-                //     ],
-                //   ),
-                // ),
-
-                // how do you feel
-
                 SizedBox(height: 25),
 
                 Row(
@@ -123,7 +97,13 @@ class _HomePageState extends State<MainScreen> {
                     Column(
                       children: [
                         FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            TriageScreen.routeName,
+                            arguments: <String, dynamic>{
+                              'problem': Problem.Anxiety,
+                            },
+                          ),
                           child: Emoticons(
                             emoticons: "😰",
                           ),
@@ -139,7 +119,13 @@ class _HomePageState extends State<MainScreen> {
                     Column(
                       children: [
                         FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            TriageScreen.routeName,
+                            arguments: <String, dynamic>{
+                              'problem': Problem.Stress,
+                            },
+                          ),
                           child: Emoticons(
                             emoticons: "😫",
                           ),
@@ -154,7 +140,13 @@ class _HomePageState extends State<MainScreen> {
                     Column(
                       children: [
                         FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(
+                            context,
+                            TriageScreen.routeName,
+                            arguments: <String, dynamic>{
+                              'problem': Problem.Depression,
+                            },
+                          ),
                           child: Emoticons(
                             emoticons: "😞",
                           ),
@@ -166,18 +158,6 @@ class _HomePageState extends State<MainScreen> {
                         )
                       ],
                     ),
-                    // Column(
-                    //   children: [
-                    //     Emoticons(
-                    //       emoticons: "😇",
-                    //     ),
-                    //     SizedBox(height: 8),
-                    //     Text(
-                    //       'Excellent',
-                    //       style: TextStyle(color: Colors.white),
-                    //     )
-                    //   ],
-                    // ),
                   ],
                 ),
               ],
