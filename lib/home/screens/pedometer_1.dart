@@ -15,11 +15,13 @@ class Stepcount extends StatefulWidget {
 class _StepcountState extends State<Stepcount> {
   late Stream<StepCount> _stepCountStream;
   late Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?', _steps = '?';
-  String _stepsPercent = '';
+  String _status = '?';
+  int _initialStepCount = 0;
+  int _steps = 0;
+  String _stepsPercent = '0.00%'; // Initialize with two decimal places
   String _distance = '0.0';
   String _calories = '0.0';
-  double _stepsPer = 0.0;
+
   String formatDate(DateTime d) {
     return d.toString().substring(0, 19);
   }
@@ -46,16 +48,14 @@ class _StepcountState extends State<Stepcount> {
     checkPermission();
   }
 
-  void calculateMiles(steps) {
-    steps = double.parse(steps);
+  void calculateMiles(int steps) {
     double dist = steps / 2500;
     setState(() {
       _distance = dist.toStringAsFixed(2);
     });
   }
 
-  void calculateCalories(steps) {
-    steps = double.parse(steps);
+  void calculateCalories(int steps) {
     double caloriesCount = 0.04 * steps;
     setState(() {
       _calories = caloriesCount.toStringAsFixed(2);
@@ -63,37 +63,35 @@ class _StepcountState extends State<Stepcount> {
   }
 
   void onStepCount(StepCount event) {
+    int currentStepCount = event.steps;
     setState(() {
-      _steps = event.steps.toString();
-      _stepsPer = int.parse(_steps) / 10000;
-      if (_stepsPer > 1) {
-        _stepsPer = 1;
+      // Calculate the actual step count based on the initial count
+      if (_initialStepCount == 0) {
+        _initialStepCount = currentStepCount;
       }
-      _stepsPercent = (_stepsPer * 100).toString();
+      _steps = currentStepCount - _initialStepCount;
+      _stepsPercent = (_steps / 10000 * 100).toStringAsFixed(2) + '%';
       calculateMiles(_steps);
       calculateCalories(_steps);
     });
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
-    print(event);
     setState(() {
       _status = event.status;
     });
   }
 
   void onPedestrianStatusError(error) {
-    print('onPedestrianStatusError: $error');
     setState(() {
       _status = '?';
     });
-    print(_status);
   }
 
   void onStepCountError(error) {
-    print('onStepCountError: $error');
     setState(() {
-      _steps = '?';
+      _steps = 0;
+      _initialStepCount = 0;
     });
   }
 
@@ -118,9 +116,9 @@ class _StepcountState extends State<Stepcount> {
             CircularPercentIndicator(
               radius: 100.0,
               lineWidth: 12.0,
-              percent: _stepsPer,
+              percent: double.parse(_stepsPercent.replaceAll('%', '')) / 100,
               animation: true,
-              center: Text("$_stepsPercent %",
+              center: Text("$_stepsPercent",
                   style: TextStyle(fontSize: 30, color: Colors.deepPurple)),
               progressColor: Colors.deepPurple,
             ),
