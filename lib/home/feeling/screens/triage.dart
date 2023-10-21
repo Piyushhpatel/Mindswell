@@ -6,7 +6,7 @@ import '../providers/rewards.dart';
 import '../providers/tasks.dart';
 import '../models/problem.dart';
 import '../widgets/bottomButton.dart';
-import '../constants.dart';
+// import '../constants.dart';
 import '../screens/challenge.dart';
 import '../widgets/customAlertDialog.dart';
 

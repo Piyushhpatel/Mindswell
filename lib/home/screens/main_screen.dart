@@ -119,6 +119,7 @@ class _HomePageState extends State<MainScreen> {
                     Column(
                       children: [
                         FloatingActionButton(
+                          backgroundColor: Colors.deepPurple[50],
                           onPressed: () => Navigator.pushNamed(
                             context,
                             TriageScreen.routeName,

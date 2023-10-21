@@ -24,7 +24,7 @@ class IntroductionScreen extends StatelessWidget {
                 Container(
                   width: size.width * 0.75,
                   child: const Text(
-                    "30 Days Fitness Challenges",
+                    "Keep Your Mental and Physical Health in Check",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -32,7 +32,7 @@ class IntroductionScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Track your fitness level by our smart Mobile App. Calories sleep and training.",
+                  "Track your fitness level and mental health by our smart Mobile App. Get Diets Plan, Wellness Tasks and Training.",
                   style: TextStyle(color: Colors.black54, height: 1.5),
                 ),
                 SizedBox(
