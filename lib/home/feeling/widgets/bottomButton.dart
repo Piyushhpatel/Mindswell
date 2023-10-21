@@ -12,24 +12,24 @@ class BottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.bottomRight,
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 10.0),
-        width: double.infinity,
-        color: Colors.grey[200],
-        height: 50.0,
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.0,
-          vertical: 5.0,
-        ),
-        child: ElevatedButton(
+        width: 80,
+        // color: Colors.grey[200],
+        height: 80.0,
+        margin: EdgeInsets.all(30),
+        // padding: EdgeInsets.all(30),
+        // child: FloatingActionButton(
+        //   onPressed: onPressed,
+        //   child: Icon(Icons.arrow_forward_ios),
+        //   style: ButtonStyle(
+        //       backgroundColor: MaterialStateProperty.all(Colors.deepPurple)),
+        // ),
+        child: FloatingActionButton(
           onPressed: onPressed,
-          child: Text(
-            title,
-            style: kSubheadingStyle,
-          ),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(kAccentColor)),
+          child: Icon(Icons.arrow_forward_ios),
+          backgroundColor: Colors.deepPurple,
         ),
       ),
     );

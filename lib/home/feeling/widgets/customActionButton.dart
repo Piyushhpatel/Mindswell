@@ -15,7 +15,7 @@ class CustomActionButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(kAccentColor),
+        backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
         textStyle: MaterialStateProperty.all(kBodyStyle),
         foregroundColor: MaterialStateProperty.all(Colors.white),
       ),

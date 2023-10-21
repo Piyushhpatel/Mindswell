@@ -54,7 +54,7 @@ class _TriageScreenState extends State<TriageScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: kAccentColor,
+          backgroundColor: Colors.deepPurple,
           elevation: 10.0,
           title: Text('Triage'),
           centerTitle: true,

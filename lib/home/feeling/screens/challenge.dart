@@ -44,7 +44,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         appBar: AppBar(
           title: Text('The Challenge!'),
           centerTitle: true,
-          backgroundColor: kAccentColor,
+          backgroundColor: Colors.deepPurple,
           elevation: 10.0,
         ),
         body: Stack(
@@ -72,7 +72,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                         padding: EdgeInsets.symmetric(
                             vertical: 14.0, horizontal: 5.0),
                         decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                            color: Colors.deepPurple[50],
                             borderRadius: BorderRadius.circular(12.0)),
                         child: Text(
                           'Current ${_problem.noun} - Ideal ${_problem.noun} = ${_problem.noun} Credits',
@@ -126,8 +126,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                           emoji: task.emoji,
                           subTitle: '${task.credits} Anxiety Credit',
                           backgroundColor: alreadySelected
-                              ? Colors.green[200]
-                              : Colors.grey[200],
+                              ? Colors.deepPurpleAccent[100]
+                              : Colors.deepPurple[50],
                           onPressed: () {
                             if (alreadySelected) {
                               setState(() {

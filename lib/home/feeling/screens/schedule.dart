@@ -71,7 +71,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         appBar: AppBar(
           title: Text('Schedule'),
           centerTitle: true,
-          backgroundColor: kAccentColor,
+          backgroundColor: Colors.deepPurple,
         ),
         body: Stack(
           children: [
@@ -106,6 +106,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     EmojiButton(
                       title: '${_formatTime(_scheduledTime)}',
                       emoji: '📅',
+                      backgroundColor: Colors.deepPurple[50],
                       subTitle: 'Select to change time',
                       onPressed: () async {
                         try {

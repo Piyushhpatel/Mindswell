@@ -46,7 +46,7 @@ class _RewardScreenState extends State<RewardScreen> {
         child: Scaffold(
       appBar: AppBar(
         title: Text('Reward'),
-        backgroundColor: kAccentColor,
+        backgroundColor: Colors.deepPurple,
         centerTitle: true,
       ),
       body: Stack(
@@ -91,8 +91,9 @@ class _RewardScreenState extends State<RewardScreen> {
                       return EmojiButton(
                         title: reward.title,
                         emoji: reward.emoji,
-                        backgroundColor:
-                            selected ? Colors.green[200] : Colors.grey[200],
+                        backgroundColor: selected
+                            ? Colors.deepPurpleAccent[100]
+                            : Colors.deepPurple[50],
                         onPressed: () {
                           setState(() {
                             _selectedReward = reward;
