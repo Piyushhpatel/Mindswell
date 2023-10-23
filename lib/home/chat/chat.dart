@@ -57,6 +57,7 @@ class _ChatbotAppState extends State<ChatbotApp> {
   final chatbot = Chatbot('API_KEY');
   List<ChatMessage> _messages = [];
   String _message = '';
+  var _controller = TextEditingController();
 
   void addMessage(String text, bool isBot) {
     setState(() {
@@ -64,17 +65,31 @@ class _ChatbotAppState extends State<ChatbotApp> {
     });
   }
 
+  bool isGreeting(String message) {
+    final greetings = ["hi", "hello", "hey", "heya", "hola", "hii"];
+    return greetings.contains(message.toLowerCase());
+  }
+
   void send() async {
     addMessage(_message, false);
 
-    try {
-      final response = await chatbot.getResponse(_message);
-      addMessage(response, true);
-    } catch (e) {
-      print('Error: $e');
-      addMessage('An error occurred. Please try again.', true);
+    if (isGreeting(_message)) {
+      addMessage("Hey!, How may I help you?", true);
+    } else {
+      try {
+        final response = await chatbot.getResponse(_message);
+        addMessage(response, true);
+      } catch (e) {
+        print('Error: $e');
+        addMessage('Oops!! Seems like there is an issue, try again', true);
+      }
     }
+
+    _controller.clear();
     _message = ''; // Clear the input field after sending.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+    });
   }
 
   @override
@@ -117,6 +132,7 @@ class _ChatbotAppState extends State<ChatbotApp> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _controller,
                     onChanged: (value) {
                       setState(() {
                         _message = value;
