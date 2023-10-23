@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mindswells/auth/signup_components/body.dart';
 // import 'package:mindswells/home/feeling/screens/checkBack.dart';
 import 'package:mindswells/home/feeling/screens/schedule.dart';
 import 'package:mindswells/home/screens/main_screen.dart';

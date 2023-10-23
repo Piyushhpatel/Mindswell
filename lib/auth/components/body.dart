@@ -1,17 +1,68 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/signup.dart';
-// import 'package:mindswells/auth/auth_components/already_have_an_account_acheck.dart';
-import 'package:mindswells/auth/auth_components/rounded_button.dart';
-import 'package:mindswells/auth/auth_components/rounded_input_field.dart';
-import 'package:mindswells/auth/auth_components/rounded_password_field.dart';
+import 'package:mindswells/home/dashboard.dart';
 import 'package:mindswells/theme/my_colors.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({
     Key? key,
   }) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _showAlertDialog(BuildContext context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _login(BuildContext context) async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    try {
+      // First, check if the user exists with the provided phone number
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email, // Use the email field for phone number
+        password: password,
+      );
+
+      if (userCredential.user == null) {
+        _showAlertDialog(context, "User Not Found", "Please Check Details");
+      } else {
+        // Successfully logged in, navigate to the main screen
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DashBoard()));
+      }
+    } catch (e) {
+      // Handle authentication errors
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +82,85 @@ class Body extends StatelessWidget {
               height: size.height * 0.35,
             ),
             SizedBox(height: size.height * 0.03),
-            RoundedInputField(
-              hintText: "Your Phone",
-              onChanged: (value) {},
-            ),
-            RoundedPasswordField(
-              onChanged: (value) {},
-            ),
-            RoundedButton(
-              text: "LOGIN",
-              press: () {},
+            // Text input for phone (use as username) and password
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Form(
+                // key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            20.0), // Adjust the radius as needed
+                        border: Border.all(
+                          color: Colors
+                              .deepPurple, // Adjust the border color as needed
+                          width: 1.0, // Adjust the border width as needed
+                        ),
+                      ),
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          contentPadding:
+                              EdgeInsets.all(16.0), // Add padding to text input
+                          border: InputBorder.none, // Remove the default border
+                        ),
+                        style: TextStyle(
+                            fontSize: 18.0), // Adjust the text size as needed
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            20.0), // Adjust the radius as needed
+                        border: Border.all(
+                          color: Colors
+                              .deepPurple, // Adjust the border color as needed
+                          width: 1.0, // Adjust the border width as needed
+                        ),
+                      ),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          contentPadding:
+                              EdgeInsets.all(16.0), // Add padding to text input
+                          border: InputBorder.none, // Remove the default border
+                        ),
+                        style: TextStyle(
+                            fontSize: 18.0), // Adjust the text size as needed
+                      ),
+                    ),
+                    Container(
+                      width: double
+                          .infinity, // Makes the button take the full width of the screen
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                      height: 45, // Optional margin for
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                30.0), // Adjust the radius as needed
+                          ),
+                        ),
+                        onPressed: () {
+                          _login(context);
+                        },
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             SizedBox(height: size.height * 0.03),
             const Text(
@@ -50,14 +170,19 @@ class Body extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignUpScreen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpScreen(),
+                  ),
+                );
               },
-              child: const Text("Sign up",
-                  style: TextStyle(
-                      color: MyColor.kPrimaryColor,
-                      fontWeight: FontWeight.bold)),
+              child: const Text(
+                "Sign up",
+                style: TextStyle(
+                  color: MyColor.kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
