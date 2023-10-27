@@ -6,6 +6,7 @@ import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/login.dart';
 import 'package:mindswells/auth/signup_components/or_divider.dart';
 import 'package:mindswells/auth/signup_components/social_icon.dart';
+import 'package:mindswells/home/bmi_screen.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _SignupPageState extends State<SignupPage> {
   void _navigateToLoginScreen() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => LoginScreen(), // Replace with your login page
+        builder: (context) => BmiScreen(), // Replace with your login page
       ),
     );
   }
@@ -53,33 +54,33 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  Future<void> _handleGoogleSignIn() async {
-    try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
+  // Future<void> _handleGoogleSignIn() async {
+  //   try {
+  //     final GoogleSignInAccount? googleSignInAccount =
+  //         await googleSignIn.signIn();
 
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
+  //     if (googleSignInAccount != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await googleSignInAccount.authentication;
 
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
+  //       final AuthCredential credential = GoogleAuthProvider.credential(
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //         idToken: googleSignInAuthentication.idToken,
+  //       );
 
-        final UserCredential authResult =
-            await _auth.signInWithCredential(credential);
+  //       final UserCredential authResult =
+  //           await _auth.signInWithCredential(credential);
 
-        final User? user = authResult.user;
+  //       final User? user = authResult.user;
 
-        if (user != null) {
-          // Google Sign-In successful, you can navigate to the next screen or perform other actions.
-        }
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  //       if (user != null) {
+  //         // Google Sign-In successful, you can navigate to the next screen or perform other actions.
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

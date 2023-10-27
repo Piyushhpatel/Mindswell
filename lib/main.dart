@@ -1,34 +1,37 @@
-import 'package:mindswells/auth/login.dart';
-import 'package:mindswells/auth/signup.dart';
-import 'package:mindswells/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:mindswells/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mindswells/auth/login.dart'; // Your login screen
+import 'package:mindswells/home/dashboard.dart';
+import 'package:mindswells/home/feeling/widgets/splashScreen.dart'; // Your main dashboard screen
 
-Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure that Flutter is initialized.
-
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Holistic',
+      title: 'Your App Title',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: StreamBuilder<User?>(
+        stream: _auth.authStateChanges(),
+        builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // You can show a loading indicator while Firebase initializes.
+          } else {
+            if (userSnapshot.hasData) {
+              // User is authenticated, navigate to the main screen
+              return DashBoard();
+            } else {
+              // User is not authenticated, navigate to the login screen
+              return SplashScreen();
+            }
+          }
+        },
+      ),
     );
   }
 }
