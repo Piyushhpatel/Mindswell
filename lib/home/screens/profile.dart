@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mindswells/auth/login.dart';
+// import 'package:mindswells/auth/login.dart';
 import 'package:mindswells/home/screens/main_screen.dart';
-import 'package:mindswells/pages/introduction_screen.dart';
+// import 'package:mindswells/pages/introduction_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

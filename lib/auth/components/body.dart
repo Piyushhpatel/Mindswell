@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/signup.dart';
 import 'package:mindswells/home/dashboard.dart';
-import 'package:mindswells/home/feeling/widgets/customAlertDialog.dart';
+// import 'package:mindswells/home/feeling/widgets/customAlertDialog.dart';
 import 'package:mindswells/theme/my_colors.dart';
 import 'package:flutter_svg/svg.dart';
 
