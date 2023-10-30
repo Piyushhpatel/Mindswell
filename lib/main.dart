@@ -1,37 +1,36 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mindswells/auth/login.dart'; // Your login screen
+import 'package:mindswells/firebase_options.dart';
 import 'package:mindswells/home/dashboard.dart';
-import 'package:mindswells/home/feeling/widgets/splashScreen.dart'; // Your main dashboard screen
+import 'package:mindswells/pages/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final prefs = await SharedPreferences.getInstance();
+  final introductionShown = prefs.getBool('introduction_shown') ?? false;
+
+  runApp(MyApp(introductionShown: introductionShown));
+}
 
 class MyApp extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final bool introductionShown;
+
+  MyApp({required this.introductionShown});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Your App Title',
+      debugShowCheckedModeBanner: false,
+      title: 'Mindswell',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: StreamBuilder<User?>(
-        stream: _auth.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
-          if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // You can show a loading indicator while Firebase initializes.
-          } else {
-            if (userSnapshot.hasData) {
-              // User is authenticated, navigate to the main screen
-              return DashBoard();
-            } else {
-              // User is not authenticated, navigate to the login screen
-              return SplashScreen();
-            }
-          }
-        },
-      ),
+      home: introductionShown ? DashBoard() : IntroductionScreen(),
     );
   }
 }

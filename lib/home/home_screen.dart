@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mindswells/home/bmi_screen.dart';
+import 'package:mindswells/auth/signup.dart';
 import 'package:mindswells/home/dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const Duration(seconds: 1),
               () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const BmiScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const SignUpScreen()),
                   ));
         } else {
           Timer(

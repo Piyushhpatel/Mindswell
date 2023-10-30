@@ -54,7 +54,8 @@ class ChatbotApp extends StatefulWidget {
 }
 
 class _ChatbotAppState extends State<ChatbotApp> {
-  final chatbot = Chatbot('API_KEY');
+  final chatbot =
+      Chatbot('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');
   List<ChatMessage> _messages = [];
   String _message = '';
   var _controller = TextEditingController();

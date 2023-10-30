@@ -71,7 +71,6 @@ class _DashBoardState extends State<DashBoard> {
       weight = prefs.getDouble('weight')!;
       bmi = (703 * weight) / (height * height);
     });
-    // TODO: implement initState
 
     super.initState();
   }

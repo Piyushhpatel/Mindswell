@@ -60,6 +60,7 @@ dependencies:
   firebase_core: ^2.19.0
   firebase_auth: ^4.11.1
   google_sign_in: ^6.1.5
+  firebase_database: ^10.3.2
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +100,7 @@ flutter:
     - assets/Mental/
     - assets/images/Exercise/
     - assets/audio/
+    - assets/demopfp.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -3,10 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mindswells/auth/components/background.dart';
-import 'package:mindswells/auth/login.dart';
-import 'package:mindswells/auth/signup_components/or_divider.dart';
-import 'package:mindswells/auth/signup_components/social_icon.dart';
-import 'package:mindswells/home/bmi_screen.dart';
+import 'package:mindswells/auth/signup_components/detail.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -20,11 +17,14 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false; // To control the loading state
+  String _email = ""; // Local variable to store email
+  String _password = ""; // Local variable to store password
 
   void _navigateToLoginScreen() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => BmiScreen(), // Replace with your login page
+        builder: (context) => Details(
+            email: _email, password: _password), // Replace with your login page
       ),
     );
   }
@@ -36,9 +36,11 @@ class _SignupPageState extends State<SignupPage> {
       });
 
       try {
+        _email = _emailController.text.trim(); // Store email
+        _password = _passwordController.text; // Store password
         await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
+          email: _email,
+          password: _password,
         );
 
         // If the signup is successful, navigate to the login screen
@@ -53,34 +55,6 @@ class _SignupPageState extends State<SignupPage> {
       }
     }
   }
-
-  // Future<void> _handleGoogleSignIn() async {
-  //   try {
-  //     final GoogleSignInAccount? googleSignInAccount =
-  //         await googleSignIn.signIn();
-
-  //     if (googleSignInAccount != null) {
-  //       final GoogleSignInAuthentication googleSignInAuthentication =
-  //           await googleSignInAccount.authentication;
-
-  //       final AuthCredential credential = GoogleAuthProvider.credential(
-  //         accessToken: googleSignInAuthentication.accessToken,
-  //         idToken: googleSignInAuthentication.idToken,
-  //       );
-
-  //       final UserCredential authResult =
-  //           await _auth.signInWithCredential(credential);
-
-  //       final User? user = authResult.user;
-
-  //       if (user != null) {
-  //         // Google Sign-In successful, you can navigate to the next screen or perform other actions.
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

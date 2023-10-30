@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mindswells/home/feeling/models/problem.dart';
 import 'package:mindswells/home/feeling/screens/triage.dart';
 import 'package:mindswells/home/screens/pedometer_1.dart';
+import 'package:mindswells/home/screens/profile.dart';
 import 'package:mindswells/theme/dimensions.dart';
 import 'package:mindswells/theme/emoticons.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,17 @@ class MainScreen extends StatefulWidget {
 class _HomePageState extends State<MainScreen> {
   var dt = DateTime.now();
   var newFormat = DateFormat("yMMMEd");
+
+  void _showProfileSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled:
+          true, // Allows the sheet to take up the full screen height
+      builder: (BuildContext context) {
+        return ProfileScreen(); // Replace with your profile screen widget
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +68,19 @@ class _HomePageState extends State<MainScreen> {
                         )
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: Colors.deepPurple[100],
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Icon(
-                        Icons.notifications,
-                        color: Colors.deepPurple,
+                    InkWell(
+                      onTap: () => _showProfileSheet(),
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        padding: EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('assets/demopfp.jpg'),
+                                fit: BoxFit.cover),
+                            color: Colors.deepPurple[200],
+                            border: Border.all(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.circular(50)),
                       ),
                     )
                   ],

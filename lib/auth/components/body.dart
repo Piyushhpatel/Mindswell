@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/signup.dart';
 import 'package:mindswells/home/dashboard.dart';
+import 'package:mindswells/home/feeling/widgets/customAlertDialog.dart';
 import 'package:mindswells/theme/my_colors.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -20,46 +21,34 @@ class _BodyState extends State<Body> {
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _showAlertDialog(BuildContext context, String title, String content) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  bool userDoesNotExist = false;
 
   Future<void> _login(BuildContext context) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
     try {
-      // First, check if the user exists with the provided phone number
+      // First, check if the user exists with the provided email and password
       final userCredential = await _auth.signInWithEmailAndPassword(
-        email: email, // Use the email field for phone number
+        email: email,
         password: password,
       );
 
       if (userCredential.user == null) {
-        _showAlertDialog(context, "User Not Found", "Please Check Details");
+        // User does not exist or login failed
+        // Set the flag to display the message.
+        setState(() {
+          userDoesNotExist = true;
+        });
       } else {
         // Successfully logged in, navigate to the main screen
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DashBoard()));
+          context,
+          MaterialPageRoute(builder: (context) => DashBoard()),
+        );
       }
     } catch (e) {
-      // Handle authentication errors
+      // Handle other authentication errors
       print(e);
     }
   }
@@ -112,6 +101,14 @@ class _BodyState extends State<Body> {
                             fontSize: 18.0), // Adjust the text size as needed
                       ),
                     ),
+                    if (userDoesNotExist)
+                      Text(
+                        "User doesn't exist or login failed.",
+                        style: TextStyle(
+                          color:
+                              Colors.red, // Customize the text color as needed.
+                        ),
+                      ),
                     Container(
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -132,8 +129,8 @@ class _BodyState extends State<Body> {
                               EdgeInsets.all(16.0), // Add padding to text input
                           border: InputBorder.none, // Remove the default border
                         ),
-                        style: TextStyle(
-                            fontSize: 18.0), // Adjust the text size as needed
+                        style: TextStyle(fontSize: 18.0),
+                        // Adjust the text size as needed
                       ),
                     ),
                     Container(
