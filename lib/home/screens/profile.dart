@@ -1,9 +1,71 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 // import 'package:mindswells/auth/login.dart';
-import 'package:mindswells/home/screens/main_screen.dart';
+import 'package:mindswells/pages/introduction_screen.dart';
+// import 'package:mindswells/home/screens/main_screen.dart';
+// import 'package:mindswells/auth/login.dart';
 // import 'package:mindswells/pages/introduction_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  static const routeName = '/profile';
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = "";
+  String age = "";
+  String height = "";
+  String weight = "";
+  String email = "";
+  String bmi = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  void logOut() async {
+    try {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          IntroductionScreen.routeName, (Route<dynamic> route) => false);
+      FirebaseAuth.instance.signOut(); // Sign out the user
+    } catch (e) {
+      print("Error logging out: $e");
+    }
+  }
+
+  Future<void> fetchUserData() async {
+    User? userId = FirebaseAuth.instance.currentUser;
+
+    if (userId == null) {
+      print("No User Id Exist");
+    } else {
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child(userId.uid).get();
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
+        setState(() {
+          name = values['name'];
+          age = values['age'];
+          height = values['height'].toString();
+          weight = values['weight'].toString();
+          email = values['email'];
+          double h = int.parse(height) * 0.305;
+          int w = int.parse(weight);
+          double value = w / (h * h);
+          bmi = value.toStringAsFixed(2);
+        });
+      } else {
+        print('No data available.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    "Jerry Patel",
+                    name,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   Text(
@@ -57,7 +119,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    "Email : pateljerry@gmail.com",
+                    "Email : $email",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -74,7 +136,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    "Height : 6 feets",
+                    "Height : $height feets",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -91,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    "Weight : 65 Kg",
+                    "Weight : $weight Kg",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -108,7 +170,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    "Bmi : 20",
+                    "Bmi : $bmi",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -121,7 +183,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context, MainScreen.routeName);
+              // logOut();
             },
             child: Text(
               "Log Out",

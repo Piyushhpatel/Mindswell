@@ -1,7 +1,10 @@
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mindswells/auth/login.dart';
 import 'package:mindswells/firebase_options.dart';
 import 'package:mindswells/home/dashboard.dart';
+import 'package:mindswells/home/screens/profile.dart';
 import 'package:mindswells/pages/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +34,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
       ),
       home: introductionShown ? DashBoard() : IntroductionScreen(),
+      routes: {
+        LoginScreen.routename: (ctx) => LoginScreen(),
+        '/profile': (context) => ProfileScreen(),
+        IntroductionScreen.routeName: (context) => IntroductionScreen(),
+      },
     );
   }
 }

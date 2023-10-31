@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mindswells/auth/components/background.dart';
 import 'package:mindswells/auth/signup.dart';
 import 'package:mindswells/home/dashboard.dart';
+import 'package:mindswells/home/feeling/widgets/customAlertDialog.dart';
 // import 'package:mindswells/home/feeling/widgets/customAlertDialog.dart';
 import 'package:mindswells/theme/my_colors.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,8 +21,7 @@ class _BodyState extends State<Body> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  bool userDoesNotExist = false;
+  String _errorMessage = "";
 
   Future<void> _login(BuildContext context) async {
     final email = _emailController.text.trim();
@@ -35,10 +35,9 @@ class _BodyState extends State<Body> {
       );
 
       if (userCredential.user == null) {
-        // User does not exist or login failed
-        // Set the flag to display the message.
+        // User does not exist
         setState(() {
-          userDoesNotExist = true;
+          _errorMessage = "User does not exist";
         });
       } else {
         // Successfully logged in, navigate to the main screen
@@ -71,92 +70,83 @@ class _BodyState extends State<Body> {
               height: size.height * 0.35,
             ),
             SizedBox(height: size.height * 0.03),
-            // Text input for phone (use as username) and password
+            Visibility(
+              child: Text(_errorMessage),
+              visible: _errorMessage.isNotEmpty,
+            ),
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: Form(
-                // key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            20.0), // Adjust the radius as needed
-                        border: Border.all(
-                          color: Colors
-                              .deepPurple, // Adjust the border color as needed
-                          width: 1.0, // Adjust the border width as needed
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          contentPadding:
-                              EdgeInsets.all(16.0), // Add padding to text input
-                          border: InputBorder.none, // Remove the default border
-                        ),
-                        style: TextStyle(
-                            fontSize: 18.0), // Adjust the text size as needed
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Adjust the radius as needed
+                      border: Border.all(
+                        color: Colors
+                            .deepPurple, // Adjust the border color as needed
+                        width: 1.0, // Adjust the border width as needed
                       ),
                     ),
-                    if (userDoesNotExist)
-                      Text(
-                        "User doesn't exist or login failed.",
-                        style: TextStyle(
-                          color:
-                              Colors.red, // Customize the text color as needed.
-                        ),
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        contentPadding:
+                            EdgeInsets.all(16.0), // Add padding to text input
+                        border: InputBorder.none, // Remove the default border
                       ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            20.0), // Adjust the radius as needed
-                        border: Border.all(
-                          color: Colors
-                              .deepPurple, // Adjust the border color as needed
-                          width: 1.0, // Adjust the border width as needed
-                        ),
-                      ),
-                      child: TextFormField(
-                        obscureText: true,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          contentPadding:
-                              EdgeInsets.all(16.0), // Add padding to text input
-                          border: InputBorder.none, // Remove the default border
-                        ),
-                        style: TextStyle(fontSize: 18.0),
-                        // Adjust the text size as needed
+                      style: TextStyle(
+                          fontSize: 18.0), // Adjust the text size as needed
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Adjust the radius as needed
+                      border: Border.all(
+                        color: Colors
+                            .deepPurple, // Adjust the border color as needed
+                        width: 1.0, // Adjust the border width as needed
                       ),
                     ),
-                    Container(
-                      width: double
-                          .infinity, // Makes the button take the full width of the screen
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
-                      height: 45, // Optional margin for
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                30.0), // Adjust the radius as needed
-                          ),
-                        ),
-                        onPressed: () {
-                          _login(context);
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(fontSize: 20),
+                    child: TextFormField(
+                      obscureText: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        contentPadding:
+                            EdgeInsets.all(16.0), // Add padding to text input
+                        border: InputBorder.none, // Remove the default border
+                      ),
+                      style: TextStyle(fontSize: 18.0),
+                      // Adjust the text size as needed
+                    ),
+                  ),
+                  Container(
+                    width: double
+                        .infinity, // Makes the button take the full width of the screen
+                    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                    height: 45, // Optional margin for
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              30.0), // Adjust the radius as needed
                         ),
                       ),
+                      onPressed: () {
+                        _login(context);
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             SizedBox(height: size.height * 0.03),

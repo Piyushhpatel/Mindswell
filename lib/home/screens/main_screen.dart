@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 // import 'package:mindswells/home/feeling/feeling.dart';
 import 'package:mindswells/home/feeling/models/problem.dart';
@@ -21,6 +23,7 @@ class MainScreen extends StatefulWidget {
 class _HomePageState extends State<MainScreen> {
   var dt = DateTime.now();
   var newFormat = DateFormat("yMMMEd");
+  String name = "";
 
   void _showProfileSheet() {
     showModalBottomSheet(
@@ -31,6 +34,31 @@ class _HomePageState extends State<MainScreen> {
         return ProfileScreen(); // Replace with your profile screen widget
       },
     );
+  }
+
+  Future<void> fetchUserData() async {
+    User? userId = FirebaseAuth.instance.currentUser;
+
+    if (userId == null) {
+      print("No User Id Exist");
+    } else {
+      final ref = FirebaseDatabase.instance.ref();
+      final snapshot = await ref.child(userId.uid).get();
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
+        setState(() {
+          name = values['name'];
+        });
+      } else {
+        print('No data available.');
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
   }
 
   @override
@@ -55,7 +83,7 @@ class _HomePageState extends State<MainScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hi Welcome!',
+                          'Welcome, $name',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,

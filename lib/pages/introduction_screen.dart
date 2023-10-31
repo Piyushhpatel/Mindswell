@@ -4,6 +4,7 @@ import 'package:mindswells/auth/login.dart';
 import 'package:mindswells/theme/my_colors.dart';
 
 class IntroductionScreen extends StatelessWidget {
+  static const routeName = '/introscreen';
   const IntroductionScreen({Key? key}) : super(key: key);
 
   @override
